@@ -1,12 +1,11 @@
 import sys
-sys.path.append('../core')
 
 import pandas as pd
 import numpy as np
 
 #import utilities
-from utilities import smote
-from utilities import get_scores
+from src.utilities import smote
+from src.utilities import get_scores
 
 #import model statements
 from sklearn.ensemble import RandomForestClassifier
