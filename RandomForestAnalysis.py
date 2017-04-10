@@ -144,9 +144,9 @@ if __name__=="__main__":
     print("    Logistic Regression:", get_scores(LogisticRegression, X_train, X_test, y_train, y_test))
     print("    Decision Tree:", get_scores(DecisionTreeClassifier, X_train, X_test, y_train, y_test))
 
-    plot_roc(X, y, RandomForestClassifier, "RF_ROC_plot.png", n_estimators=25, max_features=5)
+    plot_roc(X_train, y_train, RandomForestClassifier, "RF_ROC_plot.png", n_estimators=25, max_features=5)
     plt.close()
-    plot_roc(X, y, LogisticRegression, "LogisticRegression_ROC_plot.png")
+    plot_roc(X_train, y_train, LogisticRegression, "LogisticRegression_ROC_plot.png")
     plt.close()
-    plot_roc(X, y, DecisionTreeClassifier, "DecisionTreeClassifier_ROC_plot.png")
+    plot_roc(X_train, y_train, DecisionTreeClassifier, "DecisionTreeClassifier_ROC_plot.png")
     plt.close()

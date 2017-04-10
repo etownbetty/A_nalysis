@@ -70,7 +70,6 @@ def partition_sale_data(df, N, gt_than=False):
         return df_N_0.drop(['OrderType', 'number_sales', 'OrderDate', 'OrderNo', 'diff'], axis=1)
 
 def pivot_data(df, id_col, item_col, normalize=False):
-
     df_pivot = pd.pivot_table(df[[id_col, item_col]], index=id_col, columns=item_col, aggfunc=len, fill_value=0)
     df_matrix = df_pivot.applymap(lambda x: x*1.)
     if normalize==True:

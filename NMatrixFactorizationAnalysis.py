@@ -13,6 +13,7 @@ import scipy
 
 #model imports
 from sklearn.decomposition import NMF
+from sklearn.metrics.pairwise import cosine_similarity
 
 #plotting
 import matplotlib.pyplot as plt
@@ -66,6 +67,40 @@ def print_n_topic_components(N, H, df, sku_df, topicN, n_components, id_col, nam
         topicN = i+1
         print(print_topic_components(H, df, sku_df, topicN, n_components, id_col, name_col), "\n")
 
+def fit_mat(purch_mat):
+    n_users = purch_mat.shape[0]
+    n_items = purch_mat.shape[1]
+    item_sim_mat = cosine_similarity(purch_mat.T)
+    return item_sim_mat
+
+def _set_neighborhoods(item_sim_mat, neighborhood_size):
+    least_to_most_sim_indexes = np.argsort(item_sim_mat, 1)
+    neighborhoods = least_to_most_sim_indexes[:, neighborhood_size:]
+    return neighborhoods
+
+def pred_one_user(user_id, purch_mat, neighborhoods, fit_mat):
+    #get the indexes of the items
+    items_purchased_by_this_user = purch_mat[purch_mat.index==user_id].as_matrix().nonzero()[1]
+    # Just initializing so we have somewhere to put rating preds
+    out = np.zeros(purchased.shape[1])
+    for item_to_rate in range(purch_mat.shape[1]):
+        relevant_items = np.intersect1d(neighborhoods[item_to_rate],
+                                        items_purchased_by_this_user,
+                                        assume_unique=True)  # assume_unique speeds up intersection op
+        out[item_to_rate] = purch_mat[user_id, [relevant_items]] * \
+            fit_mat[item_to_rate, relevant_items] / \
+            fit_mat[item_to_rate, relevant_items].sum()
+    cleaned_out = np.nan_to_num(out)
+    return cleaned_out
+
+def top_n_recs(user_id, n, pred_one_user, purch_mat):
+    pred_ratings = pred_one_user(user_id)
+    item_index_sorted_by_pred_rating = list(np.argsort(pred_ratings))
+    items_rated_by_this_user = purch_mat[user_id].nonzero()[1]
+    unrated_items_by_pred_rating = [item for item in item_index_sorted_by_pred_rating
+                                    if item not in items_rated_by_this_user]
+    return unrated_items_by_pred_rating[-n:]
+
 if __name__ == "__main__":
 
     #load in the sku data
@@ -112,3 +147,7 @@ if __name__ == "__main__":
     actual_other_purchases = other_purchases(df_2purch, sku_df, topic1[0], 10, 'ProductNo', 'ProductName')
     print("Other items bought with top item in topic #1, {}".format(actual_other_purchases))
     #for a user, find a purchase from the topics and recommend an additional purchase
+
+    item_sim_mat = fit_mat(new_2purch)
+    neighborhoods = _set_neighborhoods(item_sim_mat, 100)
+    pred_15198 = pred_one_user(15198, df_2purch, neighborhoods, item_sim_mat)
