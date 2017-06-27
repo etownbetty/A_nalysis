@@ -4,9 +4,9 @@ import pandas as pd
 def prep_data(filename, ind_cols=None, ind_pos=None, ind_newcols=None, dt_cols=None):
     ## takes in a data path, with specifications for columns that should be made into indicator variables
     ## returns a pandas data frame, with new int variables in place of objects
-    if i_cols:
+    if ind_cols:
         df = pd.read_csv(filename, parse_dates=dt_cols, date_parser = pd.tseries.tools.to_datetime)
-        for i in range(len(i_cols)):
+        for i in range(len(ind_cols)):
             df[ind_newcols[i]] = np.where(df[ind_cols[i]]==ind_pos[i], 1, 0)
     else:
         df = pd.read_csv(filename)

@@ -129,7 +129,7 @@ def plot_roc(X, y, clf_class, outfile, **kwargs):
 ####                                    ####
 ############################################
 
-def plot_history_alive_min_thresholds(model, summary):
+def plot_history_alive_min_thresholds(model, summary, transaction_data, threshold):
 
     """Plotting function for threshold plot of min customer alive probability
         vs pct cumulative customers with probability.
@@ -149,8 +149,8 @@ def plot_history_alive_min_thresholds(model, summary):
     for customer in summary_multiple.index:
         individual = summary.loc[[customer]]
         sp_trans = transaction_data.ix[transaction_data['CustomerNo'] == individual.index[0]]
-        path = calculate_alive_path(bgf, sp_trans, 'OrderDate', int(individual['T']), '1D')
-        paths.append(list(path))
+        path = calculate_alive_path(model, sp_trans, 'OrderDate', int(individual['T']), '1D')
+        paths.append(path)
     #find the min path prob for each individual
     min_paths = [path.min() for path in paths]
 
