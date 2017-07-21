@@ -81,14 +81,15 @@ def purchase_roc_plot(predictions, _array, xlab, ylab, title):
     plt.title(title)
     plt.show()
 
-def roc_plot(fpr, tpr, xlab, ylab, title, label):
+def roc_plot(fpr, tpr, xlab, ylab, title, label, outfile):
     model_data, = plt.plot(fpr, tpr, color="blue", label=label)
     random_data, = plt.plot([0,1], [0,1], ls="--", color='red', label="Random")
     plt.xlabel(xlab)
     plt.ylabel(ylab)
     plt.title(title)
     plt.legend(handles=[model_data, random_data], loc=2)
-    plt.show()
+    plt.savefig(outfile)
+    plt.close()
 
 def plot_roc(X, y, clf_class, outfile, **kwargs):
     scaler = StandardScaler()
@@ -123,6 +124,7 @@ def plot_roc(X, y, clf_class, outfile, **kwargs):
     plt.title('Receiver operating characteristic')
     plt.legend(loc="lower right")
     plt.savefig(outfile)
+    plt.close()
 
 ############################################
 #### CLV plots                          ####

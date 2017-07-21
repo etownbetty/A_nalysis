@@ -68,12 +68,3 @@ def partition_sale_data(df, N, gt_than=False):
         df_N_0 = df_N.fillna(0)
         df_N_0['loyalty'] = ((max_date-df_N_0['OrderDate'])/np.timedelta64(1, 'D')).astype(int)
         return df_N_0.drop(['OrderType', 'number_sales', 'OrderDate', 'OrderNo', 'diff'], axis=1)
-
-def pivot_data(df, id_col, item_col, normalize=False):
-    df_pivot = pd.pivot_table(df[[id_col, item_col]], index=id_col, columns=item_col, aggfunc=len, fill_value=0)
-    df_matrix = df_pivot.applymap(lambda x: x*1.)
-    if normalize==True:
-        row_sums = df_matrix.sum(axis=1)
-        return df_matrix.as_matrix()/ row_sums[:, np.newaxis]
-    else:
-        return df_matrix
