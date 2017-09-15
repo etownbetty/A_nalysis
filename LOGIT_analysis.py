@@ -15,13 +15,12 @@ from visualization import roc_plot
 import matplotlib.pyplot as plt
 
 #import modeling packages
-import statsmodels.api as sm
 from statsmodels.discrete.discrete_model import Logit
 from statsmodels.tools import add_constant
 from sklearn.cross_validation import StratifiedKFold
+from sklearn.cross_validation import KFold
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_curve, roc_auc_score
-from sklearn.neighbors import KNeighborsClassifier
 
 class logitReg(object):
 

@@ -169,6 +169,8 @@ if __name__=="__main__":
     trans.fit_bgf(summary, 30)
     #make a prediction on a customer and output customer purchase history
     trans.predict_bgf_indiv(summary, 30, 19563)
+    trans.predict_bgf_indiv(summary, 30, 370381)
+    trans.predict_bgf_indiv(summary, 30, 734732)
     #make visualization of all min customer alive points, with threshold point
     trans.plot_history_alive_all(summary, 0.1)
 

@@ -160,9 +160,9 @@ def plot_history_alive_min_thresholds(model, summary, transaction_data, threshol
     #make a threshold
     y = np.arange(0, len(min_paths))/len(min_paths)
     ax = plt.scatter(sorted(min_paths), y)
-    plt.xlabel('min probability alive')
+    plt.xlabel('min probability active')
     plt.ylabel('cumulative fraction of customers')
-    plt.title('Fraction of customers with Min Probablity Alive')
+    plt.title('Fraction of customers with Min Probablity Active')
     return ax
 
 ############################################
